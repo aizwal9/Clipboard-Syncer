@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  redis:
+    image: "redis:latest"
+    container_name: clipboard-redis
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - my-network
+
+  backend:
+    container_name: clipboard-backend
+    image:  amanjaiswal144181/clipboard-backend:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+
+
